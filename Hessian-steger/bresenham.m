@@ -1,0 +1,49 @@
+function [line,num_points]=bresenham(nx,ny,px,py,length)
+x=0;
+y=0;
+dx=abs(nx);
+dy=abs(ny);
+s1=SGN(nx);
+s2=SGN(ny);
+px=px*s1;
+py=py*s2;
+if(dy>dx)
+    t=dx;
+    dx=dy;
+    dy=t;
+    t=px;
+    px=py;
+    py=t;
+    xchg=1;
+else
+    xchg=0;
+end
+maxit=ceil(length*dx);
+e=(0.5-px)*dy/dx-(0.5-py);
+n=1;
+for i=1:maxit
+    line(n).x=x;
+    line(n).y=y;
+    n=n+1;
+    while(e>=-1E-8)
+        if(xchg)
+            x=x+s1;
+        else
+            y=y+s2;
+        end
+        e=e-1;
+        if(e>-1)
+            line(n).x=x;
+            line(n).y=y;
+            n=n+1;
+        end
+    end
+        if(xchg)
+            y=y+s2;
+        else
+            x=x+s1;
+        end
+        e=e+dy/dx;
+end
+   num_points=n-1;
+end
